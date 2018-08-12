@@ -4,7 +4,6 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import {$_get} from '../../common/fetch'
 
   @Component
   export default class Goods extends Vue {
@@ -44,11 +43,10 @@
     }
 
     async getList() {
-      let url = `getGoods`
       try {
-        let response = await $_get(url);
-        let data = await response.json();
-        this.data1 = data.data.list
+        let url = `getGoods`
+        let response = await this.$get(url)
+        this.data1 = response.data.list
       } catch (e) {
         console.log("error")
       }
