@@ -10,6 +10,9 @@ axios.interceptors.request.use(config => {
 });
 
 axios.interceptors.response.use(response => {
+  if (response.data.code !== 0) {
+    errorAlert(response.data)
+  }
   return response.data
 }, error => {
   if (error.response) {

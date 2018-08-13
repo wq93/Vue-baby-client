@@ -7,8 +7,9 @@ export default class Mixin extends Vue {
 
   changeLoading() {
     this.modalLoading = false
+    console.log(this.modalLoading)
     this.$nextTick(() => {
       this.modalLoading = true
-    });
+    })
   }
 }

@@ -12,7 +12,7 @@ export const $get = (url: String, params: any, closeAlert = false) => {
 export const $post = (url, params, closeAlert = false) => {
   return axios({
     method: 'post',
-    url: `${apiapiBase}${url}`,
+    url: `${apiBase}${url}`,
     closeAlert,
     data: params,
   })

@@ -1,7 +1,7 @@
 <template>
   <Modal
     v-model="modalShow"
-    title="添加商品"
+    title="编辑商品"
     :loading="modalLoading"
     @on-ok="ok"
     @on-cancel="cancel">
@@ -51,7 +51,7 @@
   @Component({
     mixins: [Mixin]
   })
-  export default class AddGood extends Vue {
+  export default class EditGood extends Vue {
     modalShow: Boolean = false
     formCustom: Object = {
       displayName: '',
@@ -62,22 +62,28 @@
       remark: '',
     }
     @Prop()
-    showAddModal: Boolean
+    showEditModal: Boolean
+    @Prop()
+    editGood: Object
 
-    @Watch('showAddModal', {immediate: true, deep: true})
-    onChangAddModal(val: any, oldVal: any) {
+    @Watch('showEditModal', {immediate: true, deep: true})
+    onChangEditModal(val: any, oldVal: any) {
       this.modalShow = val
+    }
+
+    mounted() {
+      Object.assign(this.formCustom, this.editGood)
     }
 
     async ok() {
 
       try {
-        let url = 'addGood'
+        let url = 'updateGood'
         let params = this.formCustom
-        let res = await this.$post(url, params)
+        let res = await this.$put(url, params)
         if (res.code === 0) {
-          this.$Message.success(`添加成功!`)
-          this.$emit('changeAddModal', false)
+          this.$Message.success(`编辑成功!`)
+          this.$emit('changeEditModal', false)
         }
       } finally {
         this.changeLoading()
@@ -85,7 +91,7 @@
     }
 
     cancel() {
-      this.$emit('changeAddModal', false)
+      this.$emit('changeEditModal', false)
     }
 
   }
