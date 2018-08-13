@@ -6,9 +6,17 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/goods',
-      name: 'goods',
-      component: () => import('./views/goods')
-    }
+      path: '/',
+      name: 'index',
+      component: () => import('./views'),
+      children: [
+        {
+          path: '/goods',
+          name: 'goods',
+          component: () => import('./views/goods')
+        }
+      ]
+    },
+
   ]
 })

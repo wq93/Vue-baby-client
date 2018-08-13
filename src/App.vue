@@ -5,6 +5,15 @@
 </template>
 
 <style lang="less">
+
+  /*.icon { */
+  /*width: 2em;*/
+  /*height: 2em;*/
+  /*vertical-align: -0.5em;*/
+  /*fill: currentColor;*/
+  /*overflow: hidden;*/
+  /*}*/
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

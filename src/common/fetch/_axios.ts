@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {errorAlert} from './config'
+import {errorAlert} from '../application/config'
 
 let pageFlag = {}
 axios.interceptors.request.use(config => {

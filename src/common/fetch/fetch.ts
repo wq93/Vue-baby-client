@@ -1,5 +1,5 @@
 import axios from './_axios'
-import {apiBase} from './config'
+import {apiBase} from '../application/config'
 
 export const $get = (url: String, params: any, closeAlert = false) => {
   return axios({

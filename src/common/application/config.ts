@@ -14,8 +14,8 @@ export const codeMessage = {
   default: '请求失败'
 }
 
-export function errorAlert(data: Object) {
-  let message = codeMessage.default
+export function errorAlert(data: any) {
+  let message: String = codeMessage.default
   try {
     if (data.code) {
       codeMessage[data.code]
