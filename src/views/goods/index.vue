@@ -11,8 +11,18 @@
               icon="ios-body"
               @click="handleClickAdd">新增
       </Button>
+      <Input class="good-search"
+             search
+             v-model="params.keyword"
+             placeholder="输入商品名..."/>
     </div>
-    <Table :columns="columns" :data="list"></Table>
+    <Table :columns="columns"
+           :data="list"
+           @on-sort-change="handleClickSort"></Table>
+    <Page :total="total"
+          :page-size="8"
+          @on-change="handleChangePage"
+          size="small"/>
     <div v-if="showAddModal">
       <add-good
         :showAddModal="showAddModal"
@@ -28,10 +38,11 @@
 </template>
 <script lang="ts">
   import Vue from 'vue'
-  import {Component} from 'vue-property-decorator'
+  import {Component, Watch} from 'vue-property-decorator'
   import AddGood from './add_good/add_good'
   import EditGood from './edit_good/edit_good'
   import TableIcon from '../../components/table_icon/table_icon'
+  import {pageSize} from '../../common/application/config'
 
   @Component({
     components: {
@@ -48,6 +59,7 @@
     columns: Array = [
       {
         title: '类别',
+        sortable: true,
         render: (h, params) => {
           let {showType} = params.row
           return h('div', [
@@ -69,7 +81,8 @@
       },
       {
         title: '名称',
-        key: 'displayName'
+        key: 'displayName',
+        // width: '160'
       },
       {
         title: '数量',
@@ -137,17 +150,32 @@
         }
       }
     ]
+
     list: Array = []
 
+    params: Object = {
+      keyword: '',
+      sort: '-1',
+      pageNum: 1,
+    }
+    total: Number = 0
 
     created() {
+      this._getList()
+    }
+
+    @Watch('params.keyword')
+    onChangKeyword(val: any, oldVal: any) {
+      this.params.keyword = val
       this._getList()
     }
 
     async _getList() {
       try {
         let url = `getGoods`
-        let response = await this.$get(url)
+        let params = Object.assign({}, this.params, {pageSize})
+        let response = await this.$get(url, params)
+        this.total = response.data.total
         this.list = this._serializaData(response.data.list)
       } catch (e) {
         console.log(e)
@@ -237,6 +265,24 @@
           }
         }
       )
+    }
+
+    handleChangePage(num) {
+      this.params.pageNum = num === 0 ? 1 : num
+      this._getList()
+    }
+
+    handleClickSort(detail) {
+      let {order} = detail
+      if (order === 'desc') {
+        this.params.sort = '-1'
+        this._getList()
+      } else if (order === 'asc') {
+        this.params.sort = '1'
+        this._getList()
+      } else {
+        return false
+      }
     }
   }
 </script>

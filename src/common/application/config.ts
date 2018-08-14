@@ -2,6 +2,7 @@ import Vue from 'vue'
 import router from '../../router'
 
 export const port = 8888
+export const pageSize = 8
 
 export const apiBase = location.protocol + '//' + location.host + '/baby/'
 
