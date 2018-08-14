@@ -1,8 +1,16 @@
+<style type="text/less" lang="less">
+  @import "./goods.less";
+</style>
 <template>
   <div class="goods-warpper">
     <div class="header-content">
-      <h4> Ready </h4>
-      <Button type="primary" shape="circle" @click="handleClickAdd">新增</Button>
+      <h4> Baby preparation </h4>
+      <Button class="add-good-btn"
+              type="primary"
+              shape="circle"
+              icon="ios-body"
+              @click="handleClickAdd">新增
+      </Button>
     </div>
     <Table :columns="columns" :data="list"></Table>
     <div v-if="showAddModal">
@@ -23,6 +31,7 @@
   import {Component} from 'vue-property-decorator'
   import AddGood from './add_good/add_good'
   import EditGood from './edit_good/edit_good'
+  import TableIcon from '../../components/table_icon/table_icon'
 
   @Component({
     components: {
@@ -39,7 +48,24 @@
     columns: Array = [
       {
         title: '类别',
-        key: 'showType'
+        render: (h, params) => {
+          let {showType} = params.row
+          return h('div', [
+            h(TableIcon, {
+              props: {
+                params: {
+                  iconKey: 'type',
+                  iconValue: params.row.type,
+                }
+              }
+            }),
+            h('span', {
+              style: {
+                marginLeft: '12px'
+              }
+            }, showType),
+          ]);
+        }
       },
       {
         title: '名称',
@@ -55,14 +81,33 @@
       },
       {
         title: '来源',
-        key: 'showSource'
+        render: (h, params) => {
+          let {showSource} = params.row
+          return h('div', [
+            h(TableIcon, {
+              props: {
+                params: {
+                  iconKey: 'source',
+                  iconValue: params.row.source,
+                },
+
+              }
+            }),
+            h('span', {
+              style: {
+                marginLeft: '12px'
+              }
+            }, showSource),
+          ]);
+        }
       },
       {
-        title: '备注',
+        title: '备注(品牌)',
         key: 'remark'
       },
       {
         title: '操作',
+        className: 'good-operate-btn',
         render: (h, params) => {
           let {uuid} = params.row
           return h('div', [
@@ -103,7 +148,6 @@
       try {
         let url = `getGoods`
         let response = await this.$get(url)
-        console.log(response.data.list)
         this.list = this._serializaData(response.data.list)
       } catch (e) {
         console.log(e)

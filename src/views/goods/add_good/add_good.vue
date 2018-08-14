@@ -29,7 +29,7 @@
           <Option value="3">其他</Option>
         </Select>
       </FormItem>
-      <FormItem label="备注:" prop="">
+      <FormItem label="备注(品牌):" prop="">
         <Input v-model="formCustom.remark"
                type="textarea"
                :autosize="{minRows: 2,maxRows: 5}"

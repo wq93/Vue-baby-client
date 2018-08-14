@@ -1,4 +1,14 @@
-<style scoped>
+<style type="text/less" lang="less">
+  @import "../assets/css/reset";
+
+  .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    color: @title-color;
+    background: @menu-item-active;
+    &:after {
+      background: @menu-item-active-after;
+    }
+  }
+
   .layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
@@ -7,17 +17,24 @@
     overflow: hidden;
   }
 
-  .header-text {
-    color: #fff;
-    font-size: 16px;
+  .header-wrapper {
+    background: url("../assets/header-img.jpg");
   }
+
+  .header-text {
+    color: #000;
+    text-align: left;
+    font-size: 22px;
+  }
+
+
 </style>
 <template>
   <div class="layout">
     <Layout>
 
-      <Header>
-        <div class="header-text">Wangqi & Wangfang' Baby</div>
+      <Header class="header-wrapper">
+        <div class="header-text">Wangqi  ❤️ Wangfang' Baby 🤱 </div>
       </Header>
       <Layout>
         <Sider hide-trigger :style="{background: '#fff'}">
