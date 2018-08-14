@@ -18,6 +18,7 @@
     </div>
     <Table :columns="columns"
            :data="list"
+           :loading="tableLoading"
            @on-sort-change="handleClickSort"></Table>
     <Page :total="total"
           :page-size="8"
@@ -50,12 +51,10 @@
     }
   })
   export default class Goods extends Vue {
+    tableLoading: Boolean = true
     showAddModal: Boolean = false
-
     showEditModal: Boolean = false
-
     editGood: Object = {}
-
     columns: Array = [
       {
         title: '类别',
@@ -150,12 +149,10 @@
         }
       }
     ]
-
     list: Array = []
-
     params: Object = {
       keyword: '',
-      sort: '-1',
+      sort: '1',
       pageNum: 1,
     }
     total: Number = 0
@@ -166,11 +163,11 @@
 
     @Watch('params.keyword')
     onChangKeyword(val: any, oldVal: any) {
-      this.params.keyword = val
-      this._getList()
+      this._getList() //搜索
     }
 
-    async _getList() {
+    async _getList(tableLoading: Boolean = true) {
+      this.tableLoading = tableLoading
       try {
         let url = `getGoods`
         let params = Object.assign({}, this.params, {pageSize})
@@ -179,6 +176,8 @@
         this.list = this._serializaData(response.data.list)
       } catch (e) {
         console.log(e)
+      } finally {
+        this.tableLoading = false
       }
     }
 
