@@ -10,11 +10,16 @@
   }
 
   .layout {
+    height: 100%;
     border: 1px solid #d7dde4;
     background: #f5f7f9;
     position: relative;
     border-radius: 4px;
     overflow: hidden;
+  }
+
+  .ivu-layout {
+    height: 100%;
   }
 
   .header-wrapper {
@@ -32,9 +37,8 @@
 <template>
   <div class="layout">
     <Layout>
-
       <Header class="header-wrapper">
-        <div class="header-text">Wangqi  ❤️ Wangfang' Baby 🤱 </div>
+        <div class="header-text">Wangqi ❤️ Wangfang' Baby 🤱</div>
       </Header>
       <Layout>
         <Sider hide-trigger :style="{background: '#fff'}">

@@ -7,7 +7,17 @@
   @import "assets/css/reset.less";
   @import "assets/css/base.less";
 
+  html, body {
+    height: 100%;
+    min-width: 1280px;
 
+  }
+
+  #app {
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
 
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
