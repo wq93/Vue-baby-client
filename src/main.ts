@@ -3,9 +3,9 @@ import iView from 'iview'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import 'iview/dist/styles/iview.css'
 import {$post, $uploadFile, $put, $delete, $get} from './common/fetch/fetch'
 import {errorAlert} from './common/application/config'
+import 'iview/dist/styles/iview.css'
 
 Vue.prototype.$post = $post;
 Vue.prototype.$uploadFile = $uploadFile;

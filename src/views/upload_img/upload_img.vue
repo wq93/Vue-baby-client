@@ -29,6 +29,20 @@
         <span v-else>Loading...</span>
       </Button>
     </Form>
+    <vue-waterfall-easy height="400px"
+                        srcKey="imageURL"
+                        hrefKey="imageURL"
+                        :imgsArr="imgList"
+                        loadingTimeOut=100
+                        loadingDotCount=6
+                        @scrollReachBottom="_getList">
+      <template slot-scope="props">
+        <div class="player_info">
+          <div class="title"><i class="tt tt-quanburen"></i>{{props.value.uploadedBy}}</div>
+          <div class="title"><i class="tt tt-quanburen"></i>{{props.value.uploadedTime}}</div>
+        </div>
+      </template>
+    </vue-waterfall-easy>
     <!--<ul>-->
     <!--<li v-for="item in imgList" style="display: inline-block">-->
     <!--<div>-->
@@ -49,9 +63,12 @@
     Prop,
     Watch
   } from 'vue-property-decorator'
+  import vueWaterfallEasy from 'vue-waterfall-easy'
 
   @Component({
-    components: {fileInput}
+    components: {
+      fileInput, vueWaterfallEasy
+    }
   })
   export default class AddGood extends Vue {
     imgList: Array = []
@@ -82,7 +99,7 @@
       let url = `getImages`
       let res = await this.$get(url)
       if (res.code === 0) {
-        this.imgsArr = res.data.list
+        this.imgList = res.data.list
       }
     }
 
