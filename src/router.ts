@@ -14,6 +14,11 @@ export default new Router({
           path: '/goods',
           name: 'goods',
           component: () => import('./views/goods')
+        },
+        {
+          path: '/uploadImg',
+          name: 'uploadImg',
+          component: () => import('./views/upload_img/upload_img')
         }
       ]
     },

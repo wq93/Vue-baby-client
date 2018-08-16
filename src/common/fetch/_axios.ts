@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {errorAlert} from '../application/config'
 
-let pageFlag = {}
+let pageFlag: Object = {}
 axios.interceptors.request.use(config => {
   pageFlag[config.url] = config.closeAlert
   return config
