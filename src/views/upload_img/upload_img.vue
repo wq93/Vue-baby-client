@@ -1,62 +1,52 @@
+<style type="text/less" lang="less">
+  @import "./upload_img.less";
+</style>
 <template>
-  <div>
-    <Form :label-width="130"
-          id="form">
-      <FormItem label="图片：" class="dib">
-        <file-input @currentFile="currentFile"
-                    :fileFormat="fileFormat"
-                    :name="fileName"
-                    ref="fileinput"></file-input>
-      </FormItem>
-      <FormItem label="上传者: ">
-        <Input v-model="uploadedBy"></Input>
-      </FormItem>
-      <FormItem label="上传时间: ">
-        <DatePicker type="date"
-                    format="yyyy-MM-dd"
-                    placeholder="请选择上传日期"
-                    :options="dateOptions"
-                    @on-change="handleChangeDate"></DatePicker>
-      </FormItem>
-      <FormItem label="描述: ">
-        <Input v-model="described" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
-               placeholder="Enter something..."></Input>
-      </FormItem>
-      <Button type="primary"
-              @click="uploadFile"
-              :loading="loading">
-        <span v-if="!loading">上传</span>
-        <span v-else>Loading...</span>
+  <div class="upload-wrapper">
+    <div class="header-content">
+      <h4> 图文列表 </h4>
+      <Button class="add-upload-btn"
+              type="primary"
+              shape="circle"
+              icon="ios-cloud-upload-outline"
+              @click="handleClickAdd">新增
       </Button>
-    </Form>
-    <vue-waterfall-easy height="400px"
-                        srcKey="imageURL"
-                        hrefKey="imageURL"
-                        :imgsArr="imgList"
-                        loadingTimeOut=100
-                        loadingDotCount=6
-                        @scrollReachBottom="_getList">
-      <template slot-scope="props">
-        <div class="player_info">
-          <div class="title"><i class="tt tt-quanburen"></i>{{props.value.uploadedBy}}</div>
-          <div class="title"><i class="tt tt-quanburen"></i>{{props.value.uploadedTime}}</div>
-        </div>
-      </template>
-    </vue-waterfall-easy>
-    <!--<ul>-->
-    <!--<li v-for="item in imgList" style="display: inline-block">-->
-    <!--<div>-->
-    <!--<p>{{item.imageName}} - {{item.uploadedTime}}</p>-->
-    <!--<img :src="item.imageURL" :alt="item.imageName" width=200-->
-    <!--@click="handleClickImage">-->
-    <!--</div>-->
-    <!--</li>-->
-    <!--</ul>-->
+    </div>
+    <div class="waterfall-content">
+      <vue-waterfall-easy
+        srcKey="imageURL"
+        :maxCols="maxCols"
+        :gap="gap"
+        :imgsArr="imgList"
+        @click="handleClickImg">
+        <template slot-scope="props">
+          <div class="waterfall-described">
+            <div class="left">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-aixin"></use>
+              </svg>
+              {{props.value.uploadedBy}}
+            </div>
+            <div class="right">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-shijian"></use>
+              </svg>
+              {{props.value.uploadedTime}}
+            </div>
+          </div>
+        </template>
+      </vue-waterfall-easy>
+    </div>
+    <div v-if="showAddModal">
+      <add-image
+        :showAddModal="showAddModal"
+        @changeAddModal="changeAddModal"></add-image>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-  import fileInput from '../../components/fileInput';
+
   import Vue from 'vue'
   import {
     Component,
@@ -64,32 +54,18 @@
     Watch
   } from 'vue-property-decorator'
   import vueWaterfallEasy from 'vue-waterfall-easy'
+  import addImage from './add_image/add_image';
 
   @Component({
     components: {
-      fileInput, vueWaterfallEasy
+      vueWaterfallEasy, addImage
     }
   })
   export default class AddGood extends Vue {
     imgList: Array = []
-    fileFormat: Object = {
-      format: ['jpg', 'png'],
-      tip: '支持扩展名.jpg .png'
-    }
-    formItem: Object = {
-      uploadFile: "",
-    }
-    fileName: String = 'file'
-    loading: Boolean = false
-    uploadedBy: String = ''
-    described: String = ''
-    uploadedTime: Number = new Date().getTime()
-    dateOptions: Object = {
-      disabledDate(date) {
-        return date && date.valueOf() > Date.now()
-      }
-    }
-    imgsArr: Array = []
+    maxCols: Number = 3
+    gap: Number = 50
+    showAddModal: Boolean = false
 
     mounted() {
       this._getList()
@@ -103,39 +79,23 @@
       }
     }
 
-    handleClickImage(e) {
-      console.log(e.target.src)
+
+    handleClickAdd() {
+      this.showAddModal = true
     }
 
-    _serializaFormData(id) {
-      let formData = new FormData(document.getElementById(id));
-      formData.append('uploadedBy', this.uploadedBy)
-      formData.append('uploadedTime', this.uploadedTime)
-      formData.append('described', this.described)
-      return formData
+    changeAddModal(status) {
+      this.showAddModal = status
+      this._getList()
     }
 
-    async uploadFile() {
-      this.loading = true
-      let formData = this._serializaFormData('form')
-      let url = `uploadImg`
-      try {
-        let res = await this.$uploadFile(url, formData)
-        if (res.code === 0) {
-          this._getList()
-          this.$Message.success(`上传成功!`)
-        }
-      } finally {
-        this.loading = false
+    handleClickImg(event, {index, value}) {
+      // 阻止a标签跳转
+      event.preventDefault()
+      // 只有当点击到图片时才进行操作
+      if (event.target.tagName.toLowerCase() == 'img') {
+        console.log('img clicked', index, value)
       }
-    }
-
-    currentFile(file) {
-      this.formItem.uploadFile = file;
-    }
-
-    handleChangeDate(val) {
-      this.uploadedTime = new Date(val).getTime()
     }
   }
 </script>

@@ -85,11 +85,12 @@
 
   .file-content {
     position: relative;
+    height: 32px;
     .file-input {
       position: relative;
       /*width: 400px;*/
       float: left;
-      height: 33px;
+      height: 32px;
       opacity: 0;
       z-index: 20;
     }
@@ -116,17 +117,14 @@
     }
     .file-error-tip {
       position: absolute;
-      top: 100%;
-      left: 0;
-      line-height: 1;
-      padding-top: 6px;
-
+      top: 90%;
+      left: 12px;
     }
     .errorColor {
-      color: red;
+      color: @error-color;
     }
     .errorBorderColor {
-      border-color: red;
+      border-color: @error-color;
     }
   }
 </style>
