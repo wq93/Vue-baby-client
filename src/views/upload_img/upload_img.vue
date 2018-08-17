@@ -21,17 +21,19 @@
         @click="handleClickImg">
         <template slot-scope="props">
           <div class="waterfall-described">
-            <div class="left">
-              <svg class="icon" aria-hidden="true">
+            <div class="left waterfall-described-text">
+              <svg class="icon waterfall-described-icon" aria-hidden="true">
                 <use xlink:href="#icon-aixin"></use>
               </svg>
-              {{props.value.uploadedBy}}
+              <span :title="props.value.uploadedBy"
+                    class="text-overflow">{{props.value.uploadedBy}}</span>
             </div>
-            <div class="right">
-              <svg class="icon" aria-hidden="true">
+            <div class="right waterfall-described-text">
+              <svg class="icon waterfall-described-icon" aria-hidden="true">
                 <use xlink:href="#icon-shijian"></use>
               </svg>
-              {{props.value.uploadedTime}}
+              <span :title="props.value.showUploadTime"
+                    class="text-overflow">{{props.value.showUploadTime}}</span>
             </div>
           </div>
         </template>
@@ -55,6 +57,7 @@
   } from 'vue-property-decorator'
   import vueWaterfallEasy from 'vue-waterfall-easy'
   import addImage from './add_image/add_image';
+  import {formatDate} from '../../common/application/config'
 
   @Component({
     components: {
@@ -75,6 +78,10 @@
       let url = `getImages`
       let res = await this.$get(url)
       if (res.code === 0) {
+        let list = res.data.list
+        list.forEach(item => {
+          item.showUploadTime = formatDate(new Date(item.uploadedTime), 'yyyy-MM-dd')
+        })
         this.imgList = res.data.list
       }
     }
