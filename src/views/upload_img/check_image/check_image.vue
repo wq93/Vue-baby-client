@@ -37,6 +37,7 @@
     Prop,
     Watch
   } from 'vue-property-decorator'
+  import {formatDate} from '../../../common/application/config'
 
   @Component
   export default class CheckImage extends Vue {
@@ -53,13 +54,14 @@
     mounted() {
       this._getDetail()
     }
-
     async _getDetail() {
       let url = `getImageDetail`
       let params = {uuid: this.uuid}
       let res = await this.$get(url, params)
       if (res.code === 0) {
-        Object.assign(this.imgDetail, res.data.detail)
+        let uploadedTime = res.data.detail.uploadedTime
+        uploadedTime = formatDate(new Date(uploadedTime), 'yyyy-MM-dd')
+        Object.assign(this.imgDetail, res.data.detail,{uploadedTime})
       }
     }
 

@@ -8,6 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
+      redirect: 'goods',
       component: () => import('./views'),
       children: [
         {
@@ -21,7 +22,8 @@ export default new Router({
           component: () => import('./views/upload_img/upload_img')
         },
         {
-          path: '/checkImg/:uuid',
+          path: '/checnkImg/:uuid',
+          name: 'uploadImg',
           props: true,
           component: () => import('./views/upload_img/check_image/check_image')
         }

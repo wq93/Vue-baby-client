@@ -113,7 +113,7 @@
       // 只有当点击到图片时才进行操作
       if (event.target.tagName.toLowerCase() == 'img') {
         let {uuid} = value
-        this.$router.push(`/checkImg/${uuid}`)
+        this.$router.push(`/checnkImg/${uuid}`)
       }
     }
   }

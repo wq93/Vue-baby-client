@@ -15,7 +15,7 @@
                     ref="fileinput"></file-input>
       </FormItem>
       <FormItem label="上传者: ">
-        <Input v-model="uploadedBy"></Input>
+        <Input v-model="uploadedBy" placeholder="填写上传者"></Input>
       </FormItem>
       <FormItem label="上传时间: ">
         <DatePicker type="date"
@@ -27,7 +27,7 @@
       </FormItem>
       <FormItem label="描述: ">
         <Input v-model="described" type="textarea" :autosize="{minRows: 6,maxRows: 5}"
-               placeholder="Enter something..."></Input>
+               placeholder="输入图片的描述..."></Input>
       </FormItem>
     </Form>
   </Modal>

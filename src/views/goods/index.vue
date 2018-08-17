@@ -156,7 +156,6 @@
       pageNum: 1,
     }
     total: Number = 0
-
     created() {
       this._getList()
     }

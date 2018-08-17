@@ -42,31 +42,34 @@
       </Header>
       <Layout>
         <Sider hide-trigger :style="{background: '#fff'}">
-          <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
+          <Menu :active-name="activName"
+                theme="light"
+                width="auto"
+                @on-select="handleSelectRoute"
+                :open-names="['1']">
             <Submenu name="1">
               <template slot="title">
                 <Icon type="ios-navigate"></Icon>
                 关于宝宝
-
               </template>
-              <MenuItem name="1-1" to="goods">商品列表</MenuItem>
-              <MenuItem name="1-2" to="uploadImg">图文列表</MenuItem>
+              <MenuItem name="goods">商品列表</MenuItem>
+              <MenuItem name="uploadImg">图文列表</MenuItem>
             </Submenu>
             <!--<Submenu name="2">-->
-              <!--<template slot="title">-->
-                <!--<Icon type="ios-keypad"></Icon>-->
-                <!--Item 2-->
-              <!--</template>-->
-              <!--<MenuItem name="2-1">Option 1</MenuItem>-->
-              <!--<MenuItem name="2-2">Option 2</MenuItem>-->
+            <!--<template slot="title">-->
+            <!--<Icon type="ios-keypad"></Icon>-->
+            <!--Item 2-->
+            <!--</template>-->
+            <!--<MenuItem name="2-1">Option 1</MenuItem>-->
+            <!--<MenuItem name="2-2">Option 2</MenuItem>-->
             <!--</Submenu>-->
             <!--<Submenu name="3">-->
-              <!--<template slot="title">-->
-                <!--<Icon type="ios-analytics"></Icon>-->
-                <!--Item 3-->
-              <!--</template>-->
-              <!--<MenuItem name="3-1">Option 1</MenuItem>-->
-              <!--<MenuItem name="3-2">Option 2</MenuItem>-->
+            <!--<template slot="title">-->
+            <!--<Icon type="ios-analytics"></Icon>-->
+            <!--Item 3-->
+            <!--</template>-->
+            <!--<MenuItem name="3-1">Option 1</MenuItem>-->
+            <!--<MenuItem name="3-2">Option 2</MenuItem>-->
             <!--</Submenu>-->
           </Menu>
         </Sider>
@@ -79,6 +82,26 @@
     </Layout>
   </div>
 </template>
-<script>
-  export default {}
+<script lang="ts">
+  import Vue from 'vue'
+  import {
+    Component,
+    Prop,
+    Watch
+  } from 'vue-property-decorator'
+
+  @Component
+  export default class Index extends Vue {
+    activName: String = ''
+
+    @Watch('$route', {immediate: true})
+    onChangRouter(val: any, oldVal: any) {
+      this.activName = val.name
+    }
+
+    handleSelectRoute(name) {
+      this.activName = name
+      this.$router.push(`/${name}`)
+    }
+  }
 </script>
