@@ -1,5 +1,6 @@
 <template>
   <Modal
+    class="add-image-modal"
     v-model="modalShow"
     title="添加商品"
     :loading="modalLoading"
@@ -25,7 +26,7 @@
                     @on-change="handleChangeDate"></DatePicker>
       </FormItem>
       <FormItem label="描述: ">
-        <Input v-model="described" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+        <Input v-model="described" type="textarea" :autosize="{minRows: 6,maxRows: 5}"
                placeholder="Enter something..."></Input>
       </FormItem>
     </Form>
@@ -59,7 +60,7 @@
 
     fileFormat: Object = {
       format: ['jpg', 'JPG', 'png'],
-      tip: '支持扩展名.jpg .png'
+      tip: '支持上传图片'
     }
     formItem: Object = {
       uploadFile: "",

@@ -19,6 +19,11 @@ export default new Router({
           path: '/uploadImg',
           name: 'uploadImg',
           component: () => import('./views/upload_img/upload_img')
+        },
+        {
+          path: '/checkImg/:uuid',
+          props: true,
+          component: () => import('./views/upload_img/check_image/check_image')
         }
       ]
     },

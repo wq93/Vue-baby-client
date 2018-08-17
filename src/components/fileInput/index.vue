@@ -46,7 +46,7 @@
       },
       boxWidth: {
         type: String,
-        default: '400px'
+        default: '100%'
       }
     },
     computed: {

@@ -12,6 +12,9 @@
               @click="handleClickAdd">新增
       </Button>
     </div>
+    <div class="demo-spin-container" v-if="loading">
+      <Spin fix></Spin>
+    </div>
     <div class="waterfall-content">
       <vue-waterfall-easy
         srcKey="imageURL"
@@ -64,25 +67,33 @@
       vueWaterfallEasy, addImage
     }
   })
-  export default class AddGood extends Vue {
+  export default class UploadImg extends Vue {
     imgList: Array = []
     maxCols: Number = 3
     gap: Number = 50
     showAddModal: Boolean = false
+    loading: Boolean = true
 
     mounted() {
       this._getList()
     }
 
     async _getList() {
-      let url = `getImages`
-      let res = await this.$get(url)
-      if (res.code === 0) {
-        let list = res.data.list
-        list.forEach(item => {
-          item.showUploadTime = formatDate(new Date(item.uploadedTime), 'yyyy-MM-dd')
-        })
-        this.imgList = res.data.list
+      this.loading = true
+      try {
+        let url = `getImages`
+        let res = await this.$get(url)
+        if (res.code === 0) {
+          let list = res.data.list
+          list.forEach(item => {
+            item.showUploadTime = formatDate(new Date(item.uploadedTime), 'yyyy-MM-dd')
+          })
+          this.imgList = res.data.list
+        }
+      } finally {
+        setTimeout(() => {
+          this.loading = false
+        }, 1500)
       }
     }
 
@@ -101,14 +112,9 @@
       event.preventDefault()
       // 只有当点击到图片时才进行操作
       if (event.target.tagName.toLowerCase() == 'img') {
-        console.log('img clicked', index, value)
+        let {uuid} = value
+        this.$router.push(`/checkImg/${uuid}`)
       }
     }
   }
 </script>
-
-<style scoped>
-  #form {
-    width: 40%;
-  }
-</style>
