@@ -52,7 +52,8 @@
                 <Icon type="ios-navigate"></Icon>
                 关于宝宝
               </template>
-              <MenuItem name="goods">商品列表</MenuItem>
+              <MenuItem name="goods">宝贝列表</MenuItem>
+              <MenuItem name="goodsMother">宝妈列表</MenuItem>
               <MenuItem name="uploadImg">图文列表</MenuItem>
             </Submenu>
             <!--<Submenu name="2">-->

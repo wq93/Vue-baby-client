@@ -63,6 +63,8 @@
     }
     @Prop()
     showAddModal: Boolean
+    @Prop()
+    urlType: String
 
     @Watch('showAddModal', {immediate: true, deep: true})
     onChangAddModal(val: any, oldVal: any) {
@@ -70,9 +72,8 @@
     }
 
     async ok() {
-
       try {
-        let url = 'addGood'
+        let url = 'add' + this.urlType
         let params = this.formCustom
         let res = await this.$post(url, params)
         if (res.code === 0) {

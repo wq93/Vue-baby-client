@@ -1,29 +1,29 @@
-<style type="text/less" lang="less">
-  @import "./goods.less";
-</style>
 <template>
-  <div class="goods-warpper">
-    <div class="header-content">
-      <h4> Baby preparation 共计: {{totalPrice}}元 </h4>
-      <Button class="add-good-btn"
-              type="primary"
-              shape="circle"
-              icon="ios-body"
-              @click="handleClickAdd">新增
-      </Button>
-      <Input class="good-search"
-             search
-             v-model="params.keyword"
-             placeholder="输入商品名..."/>
+  <div class="goods-mother-warpper">
+    <Row class="header-content">
+      <Col span="12">
+        <h4>宝妈列表 共计: {{totalPrice}}元</h4>
+      </Col>
+      <Col span="12">
+        <Button class="add-good-btn"
+                type="primary"
+                shape="circle"
+                icon="ios-body"
+                @click="handleClickAdd">新增
+        </Button>
+        <Input class="good-search"
+               search
+               v-model="params.keyword"
+               placeholder="输入商品名..."/>
+      </Col>
+    </Row>
+    <div class="list-content">
+      <Table :columns="columns" :data="list" :loading="tableLoading"></Table>
+      <Page :total="total"
+            :page-size="8"
+            @on-change="handleChangePage"
+            size="small"/>
     </div>
-    <Table :columns="columns"
-           :data="list"
-           :loading="tableLoading"
-           @on-sort-change="handleClickSort"></Table>
-    <Page :total="total"
-          :page-size="8"
-          @on-change="handleChangePage"
-          size="small"/>
     <div v-if="showAddModal">
       <add-good
         :showAddModal="showAddModal"
@@ -39,25 +39,28 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
   import Vue from 'vue'
   import {Component, Watch} from 'vue-property-decorator'
-  import AddGood from './add_good/add_good'
-  import EditGood from './edit_good/edit_good'
   import TableIcon from '../../components/table_icon/table_icon'
   import {pageSize} from '../../common/application/config'
+  import AddGood from '../goods/add_good/add_good'
+  import EditGood from '../goods/edit_good/edit_good'
 
   @Component({
-    components: {
-      AddGood, EditGood
-    }
+    components: {AddGood, EditGood}
   })
   export default class Goods extends Vue {
     totalPrice: Number = 0
-    tableLoading: Boolean = true
+    params: Object = {
+      keyword: '',
+    }
     showAddModal: Boolean = false
     showEditModal: Boolean = false
     editGood: Object = {}
+    urlType: String = 'GoodsMother'
+    tableLoading: Boolean = false
     columns: Array = [
       {
         title: '类别',
@@ -153,27 +156,16 @@
       }
     ]
     list: Array = []
-    params: Object = {
-      keyword: '',
-      sort: '1',
-      pageNum: 1,
-    }
     total: Number = 0
-    urlType: String = 'Goods'
 
     created() {
       this._getList()
     }
 
-    @Watch('params.keyword')
-    onChangKeyword(val: any, oldVal: any) {
-      this._getList() //搜索
-    }
-
     async _getList(tableLoading: Boolean = true) {
       this.tableLoading = tableLoading
       try {
-        let url = `getGoods`
+        let url = `getGoodsMother`
         let params = Object.assign({}, this.params, {pageSize})
         let response = await this.$get(url, params)
         this.totalPrice = response.data.totalPrice
@@ -233,13 +225,6 @@
       this.showAddModal = true
     }
 
-    handleClickEdit(view) {
-      let {count, displayName, price, remark, source, type, uuid} = view
-      Object.assign(this.editGood,
-        {count, displayName, price, remark, source, type, uuid})
-      this.showEditModal = true
-    }
-
     changeAddModal(status) {
       this.showAddModal = status
       this._getList()
@@ -250,6 +235,18 @@
       this._getList()
     }
 
+    handleChangePage(num) {
+      this.params.pageNum = num === 0 ? 1 : num
+      this._getList()
+    }
+
+    handleClickEdit(view) {
+      let {count, displayName, price, remark, source, type, uuid} = view
+      Object.assign(this.editGood,
+        {count, displayName, price, remark, source, type, uuid})
+      this.showEditModal = true
+    }
+
     handleClickDelete(uuid) {
       this.$Modal.confirm({
           loading: true,
@@ -257,7 +254,7 @@
           content: `<p>确定要删除此商品吗？</p>`,
           onOk: async () => {
             try {
-              let url = `deleteGood?uuid=${uuid}`
+              let url = `deleteGoodMother?uuid=${uuid}`
               let res = await this.$delete(url)
               if (res.code === 0) {
                 this.$Message.success(`删除成功!`)
@@ -270,23 +267,8 @@
         }
       )
     }
-
-    handleChangePage(num) {
-      this.params.pageNum = num === 0 ? 1 : num
-      this._getList()
-    }
-
-    handleClickSort(detail) {
-      let {order} = detail
-      if (order === 'desc') {
-        this.params.sort = '-1'
-        this._getList()
-      } else if (order === 'asc') {
-        this.params.sort = '1'
-        this._getList()
-      } else {
-        return false
-      }
-    }
   }
 </script>
+<style type="text/less" lang="less">
+  @import "./goods_mother.less";
+</style>

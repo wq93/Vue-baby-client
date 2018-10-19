@@ -65,6 +65,8 @@
     showEditModal: Boolean
     @Prop()
     editGood: Object
+    @Prop()
+    urlType: String
 
     @Watch('showEditModal', {immediate: true, deep: true})
     onChangEditModal(val: any, oldVal: any) {
@@ -72,13 +74,13 @@
     }
 
     mounted() {
-      Object.assign(this.formCustom, this.editGood)
+      this.formCustom = this.editGood
     }
 
     async ok() {
 
       try {
-        let url = 'updateGood'
+        let url = 'update' + (this.urlType === 'GoodsMother' ? 'GoodMother' : 'Good')
         let params = this.formCustom
         let res = await this.$put(url, params)
         if (res.code === 0) {
