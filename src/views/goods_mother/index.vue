@@ -51,6 +51,7 @@
   @Component({
     components: {AddGood, EditGood}
   })
+
   export default class Goods extends Vue {
     totalPrice: Number = 0
     params: Object = {
